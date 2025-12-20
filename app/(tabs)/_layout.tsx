@@ -1,11 +1,9 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-
+import { MaterialIcons } from '@expo/vector-icons';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -14,20 +12,35 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: () => <MaterialIcons name="home" size={24} color="white" />,
+        }}
+
+      />
+      <Tabs.Screen
+        name="calendar"
+        options={{
+          title: 'calendar',
+          tabBarIcon: () => <MaterialIcons name="calendar-today" size={24} color="white" />,
+        }}
+
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: () => <MaterialIcons name="settings" size={24} color="white" />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="expense"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Expense',
+          tabBarIcon: () => <MaterialIcons name="attach-money" size={24} color="white" />,
         }}
       />
     </Tabs>

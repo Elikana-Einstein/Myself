@@ -16,6 +16,12 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/investment" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/expense" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/income" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/yearlyreview" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/monthlyreview" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/weeklyreview" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />

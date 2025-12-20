@@ -1,29 +1,157 @@
-import { Link } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native'
+import React, { useState } from 'react'
+import { MaterialIcons } from '@expo/vector-icons'
+import { insertTodo } from '../database/db'
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+const Modalform = ({ modal, setModal }) => {
 
-export default function ModalScreen() {
+  const [form, setForm] = useState({
+    title: '',
+    description: '',
+    priority:'',
+    status:'',
+    time: '',
+  })
+
+  async function handleSubmitted() {
+    if (!form.title.trim() || !form.description.trim()  || !form.priority.trim() || !form.status.trim() || !form.time.trim()   ) {
+      alert("All fields are required")
+      return
+    }
+
+    await insertTodo(form)
+
+    setForm({ title:'', description:'',priority:'',status:'', time:'' })
+    setModal(false)
+  }
+
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">This is a modal</ThemedText>
-      <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="link">Go to home screen</ThemedText>
-      </Link>
-    </ThemedView>
-  );
+    <Modal
+      animationType="slide"
+      transparent
+      visible={modal}
+      onRequestClose={() => setModal(false)}
+    >
+      <View style={styles.modal}>
+
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.modal_text}>Add task</Text>
+          <MaterialIcons
+            name="close"
+            size={24}
+            onPress={() => setModal(false)}
+          />
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* Title */}
+        <Text style={styles.label}>Title</Text>
+        <TextInput
+          style={styles.input}
+          value={form.title}
+          onChangeText={text => setForm({ ...form, title: text })}
+          placeholder="Task title"
+        />
+
+        {/* Description */}
+        <Text style={styles.label}>Description</Text>
+        <TextInput
+          style={styles.input}
+          value={form.description}
+          onChangeText={text => setForm({ ...form, description: text })}
+          placeholder="Task description"
+        />
+
+        {/* priority */}
+        <Text style={styles.label}>Priority</Text>
+        <TextInput
+          style={styles.input}
+          value={form.priority}
+          onChangeText={text => setForm({ ...form, priority: text })}
+          placeholder="Low || High || Medium"
+        />
+         {/* status */}
+        <Text style={styles.label}>Status</Text>
+        <TextInput
+          style={styles.input}
+          value={form.status}
+          onChangeText={text => setForm({ ...form, status: text })}
+          placeholder="Pending"
+        />
+   {/* time */}
+        <Text style={styles.label}>Time</Text>
+        <TextInput
+          style={styles.input}
+          value={form.time}
+          onChangeText={text => setForm({ ...form, time: text })}
+          placeholder="Task time"
+        />
+
+
+        {/* Submit */}
+        <TouchableOpacity style={styles.btn} onPress={handleSubmitted}>
+          <Text style={styles.btnText}>Submit</Text>
+        </TouchableOpacity>
+
+      </View>
+    </Modal>
+  )
 }
 
+export default Modalform
 const styles = StyleSheet.create({
-  container: {
+  modal: {
     flex: 1,
+    marginTop: 100,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: 'violet',
+    padding: 20
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  modal_text: {
+    fontSize: 23,
+    fontWeight: '600'
+  },
+  divider: {
+    height: 2,
+    backgroundColor: 'black',
+    marginVertical: 10
+  },
+  label: {
+    fontSize: 18,
+    marginTop: 15
+  },
+  input: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'green',
+    padding: 10
+  },
+  btn: {
+    backgroundColor: 'lightgreen',
+    height: 45,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    marginTop: 30
   },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-});
+  btnText: {
+    fontSize: 18,
+    fontWeight: '600'
+  }
+})
