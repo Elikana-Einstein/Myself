@@ -1,16 +1,27 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View ,ScrollView} from 'react-native'
-import React, {  useState } from 'react'
+import React, {  use, useEffect, useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import {expenses} from '../../modules/expense'
 import { navigate } from 'expo-router/build/global-state/routing'
-import Modalform from '../../app/modal'
+import TransactionModal from '../modals/transactionModal'
+import { getAllTransactions } from '@/database/transactions'
 const Expense = () => {
-   const totalExpense = expenses.expenses.filter(item=>item.TransactionType === 'Expense').reduce((sum,{amount})=>sum + Number(amount),0);
-    const totalIncome = expenses.expenses.filter(item=>item.TransactionType === 'Income').reduce((sum,{amount})=>sum + Number(amount),0);
-    const totalInvest = expenses.expenses.filter(item=>item.TransactionType === 'Invest').reduce((sum,{amount})=>sum + Number(amount),0);
+  const [transactions,setTransactions]=useState([])
+   const totalExpense = transactions.filter(item=>item.TransactionType.toLowerCase() === 'expense').reduce((sum,{amount})=>sum + Number(amount),0);
+    const totalIncome = transactions.filter(item=>item.TransactionType.toLowerCase() === 'income').reduce((sum,{amount})=>sum + Number(amount),0);
+    const totalInvest = transactions.filter(item=>item.TransactionType.toLowerCase() === 'invest').reduce((sum,{amount})=>sum + Number(amount),0);
     
   const[modal,setModal]=useState(false);
- 
+ const onClose= ()=>{
+      setModal(false)
+ }
+ useEffect(()=>{
+  async function fecthTransactions() {
+   const result = await getAllTransactions();
+   setTransactions(result)
+  }
+  fecthTransactions();
+ },[])
    
 
   return (
@@ -37,14 +48,14 @@ const Expense = () => {
       </View>
      <View>
        <ScrollView style={styles.list}>
-        {expenses.expenses.map((item)=>
+        {transactions.map((item)=>
         (
             <View key={item.id} style={styles.list_items}> 
               <View>
-                <Text style={[styles.transaction,item.TransactionType === 'Expense'?{color:'red'}:{color:'green'}]}>{item.TransactionType}</Text>
+                <Text style={[styles.transaction,item.TransactionType.toLowerCase() === 'expense'?{color:'red'}:{color:'green'}]}>{item.TransactionType}</Text>
                 <View style={{flexDirection:'row',gap:40}}>
-                  <Text style={[item.TransactionType === 'Expense'?{color:'red',fontSize:15}:{color:'green'}]} >{item.amount} <Text style={{color:'black',fontSize:12,fontStyle:'italic',fontWeight:'bold'}}>ksh</Text></Text>
-                  <Text style={[{fontSize:15},item.for?{color:'blue'}:{color:'purple'}]} >{item.for || item.from}</Text>
+                  <Text style={[item.TransactionType.toLowerCase() === 'expense'?{color:'red',fontSize:15}:{color:'green'}]} >{item.amount} <Text style={{color:'black',fontSize:12,fontStyle:'italic',fontWeight:'bold'}}>ksh</Text></Text>
+                  <Text style={[{fontSize:15},item.for?{color:'blue'}:{color:'purple'}]} >{item.for || item.description}</Text>
                 </View>
               </View>
               <View>
@@ -61,7 +72,7 @@ const Expense = () => {
         ))}
       </ScrollView>
         {
-          modal? <Modalform  setModal={setModal} modal={modal}/>:<></>
+          modal? <TransactionModal  onClose={onClose} visible={modal}/>:<></>
         }
      </View>
 
