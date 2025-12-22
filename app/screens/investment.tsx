@@ -10,7 +10,7 @@ const Investment = () => {
       const [investmentModalVisible, setInvestmentModalVisible] = useState(false);
       const [platforms,setPlatforms] = useState([]);
       const [investments,setInvestments] = useState([]);
-
+      const [filter,setFilter] = useState('');
       useEffect(()=>{
         const fetchPlatforms = async()=>{
           try{
@@ -24,7 +24,9 @@ const Investment = () => {
           ;
         }
         fetchPlatforms();
-      },[])
+      },[modalVisible,investmentModalVisible])
+
+     
 
   return (
     <View style={{backgroundColor:'grey',height:'100%'}}>
@@ -56,12 +58,12 @@ const Investment = () => {
 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} > 
   <View style={{ flexDirection: 'row',  justifyContent: 'space-between', gap: 20 ,marginHorizontal:20}}>
     { platforms.map((platform,index)=>(
-      <View key={index} style={{ backgroundColor: 'white', padding: 10, borderRadius: 5, width: 150 }}>
+      <TouchableOpacity onPress={()=>setFilter(platform.name)} key={index} style={{ backgroundColor: 'white', padding: 10, borderRadius: 5, width: 150 }}>
         <Text style={{ fontWeight: 'bold', marginBottom: 5 ,textDecorationLine:'underline',color:'#7c1f35ff'}}>{platform.name}</Text>  
         <Text>Target:  <Text style={{color:'#6a0d0dff'}}>  {platform.target_amount}</Text> </Text>
         <Text>Duration:<Text style={{color:'#6b0808ff'}}>  {platform.duration}     </Text> </Text>
         <Text>Balance: <Text style={{color:'#730e0eff'}}> {platform.balance}       </Text> </Text>
-      </View>
+      </TouchableOpacity>
     )) }
   </View>
 </ScrollView>
@@ -72,8 +74,8 @@ const Investment = () => {
           <MaterialCommunityIcons name='plus-circle' size={25} color={'green'} style={{position:'absolute',right:10,top:0}} onPress={()=>setInvestmentModalVisible(true)}/>
         </View>
           <ScrollView>
-            {
-              investments.map((item,index)=>(
+            {  !filter ?
+              (investments.map((item,index)=>(
                 <View style={{backgroundColor:'white',padding:10,margin:10}} key={index}>
                       <Text style={{color:'blue',textDecorationLine:'underline'}}>{item.platformName}</Text>
                       <View style={{flexDirection:'row',gap:20}}>
@@ -81,11 +83,26 @@ const Investment = () => {
                         <Text><Text style={{color:'tomato'}}>Date:</Text> {item.date}</Text>
                       </View>
                 </View>
-              ))
+              )))
+              :
+              (investments.filter(investment=>investment.platformName===filter).map((item,index)=>(
+                <View style={{backgroundColor:'white',padding:10,margin:10}} key={index}>
+                      <Text style={{color:'blue',textDecorationLine:'underline'}}>{item.platformName}</Text>
+                      <View style={{flexDirection:'row',gap:20}}>
+                        <Text><Text style={{color:'tomato'}}>Amount:</Text> {item.amount}</Text>
+                        <Text><Text style={{color:'tomato'}}>Date:</Text> {item.date}</Text>
+                      </View>
+                </View>
+              )))
+              
             }
           </ScrollView>
-          <InvestmentModal modalVisible={investmentModalVisible} setModalVisible={setInvestmentModalVisible} />
+          <InvestmentModal modalVisible={investmentModalVisible} setModalVisible={setInvestmentModalVisible} platForms={platforms} />
           <InvestModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+          <TouchableOpacity onPress={()=>setFilter('')} style={{position:'absolute',bottom:40,right:10}}>
+            <MaterialCommunityIcons name = 'filter' size={20} color={'black'} style={{position:'absolute',right:10,top:10}} />
+              <Text style={{position:'absolute',right:35,top:10,color:'black'}}>Clear filter</Text>
+          </TouchableOpacity>
         </View>
         <View >
           <Text>Actions</Text>

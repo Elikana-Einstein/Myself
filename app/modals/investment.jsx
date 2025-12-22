@@ -10,15 +10,17 @@ import {
   TouchableWithoutFeedback,
   TextInput,
 } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 interface InvestModalProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
+  platForms: Array<{id:number, name:string}>;
 }
 
 
 
-const InvestmentModal = ({ modalVisible, setModalVisible }: InvestModalProps) => {
+const InvestmentModal = ({ modalVisible, setModalVisible ,platForms}: InvestModalProps) => {
   const [form, setForm] = React.useState({
     platformName: '',
     amount: '',
@@ -32,15 +34,13 @@ const InvestmentModal = ({ modalVisible, setModalVisible }: InvestModalProps) =>
   };
 
   const handleSubmit = async () => {
+    
     if (!form.platformName || !form.amount || !form.date) {
       alert('Please fill in all fields');
       return;
     }
 
-
-     
-
-      insertInvestment(form);
+     await insertInvestment(form);
       
       // Reset form and close modal
       setForm({
@@ -68,7 +68,7 @@ const InvestmentModal = ({ modalVisible, setModalVisible }: InvestModalProps) =>
             <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
               <View style={styles.modalContent}>
                 <View style={styles.modalHeader}>
-                  <Text style={styles.modalTitle}>Add Investment Platform</Text>
+                  <Text style={styles.modalTitle}>Add Investment </Text>
                   <TouchableOpacity
                     onPress={handleCloseModal}
                     style={styles.closeButton}
@@ -80,13 +80,20 @@ const InvestmentModal = ({ modalVisible, setModalVisible }: InvestModalProps) =>
                 <View style={styles.modalBody}>
                   <View style={styles.inputContainer}>
                     <Text style={styles.label}>Platform Name</Text>
-                    <TextInput
-                      placeholder="e.g., Ziidi"
-                      style={styles.input}
-                      value={form.platformName}
-                      onChangeText={(text) => setForm({...form, platformName: text})}
-                      placeholderTextColor="#999"
-                    />
+                    <View style={{borderWidth:1,borderColor:'#bf1111ff',borderRadius:8}}>
+                   <Picker 
+                   style={styles.picker}
+                    selectedValue={form.platformName}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setForm({...form, platformName: itemValue})
+                    }
+                   >
+                    {platForms.map((platform)=>
+                      <Picker.Item label={platform.name} value={platform.name} key={platform.id}  />
+                    )
+                    }
+                   </Picker>
+                   </View>
                   </View>
                   
                   <View style={styles.inputContainer}>
@@ -218,11 +225,11 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#bf1111ff',
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',
   },
   modalFooter: {
     flexDirection: 'row',
@@ -256,4 +263,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
   },
+  picker: {
+    borderWidth: 1,
+    borderColor: '#bf1111ff',
+    borderRadius: 8,
+  }
 });

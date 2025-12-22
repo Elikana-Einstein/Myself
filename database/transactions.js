@@ -11,7 +11,6 @@ export const createTransactionDb = async () => {
   );`);
 }
 
-createTransactionDb();
 export const insertTransaction = async (transaction) => {
     
   const db = await getDBConnection();
@@ -32,16 +31,18 @@ return results;
 export const createIvestmentPlatformsTable = async (form) => {
   const db = await getDBConnection();
 
-  db.execAsync(
+
+   db.execAsync(
     `CREATE TABLE IF NOT EXISTS platforms(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
+      name TEXT  UNIQUE,
       target_amount NUMBER,
       duration NUMBER,
       balance NUMBER
 
     )`
   )
+
   db.execAsync(
     `CREATE TABLE IF NOT EXISTS investment(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,10 +56,20 @@ export const createIvestmentPlatformsTable = async (form) => {
 
 export const insertPlatform = async (form) => {
   const db = await getDBConnection();
-  await db.runAsync(
+
+
+  try {
+    await db.runAsync(
     `INSERT INTO platforms (name, target_amount, duration, balance) VALUES (?, ?, ?, ?)`,
    [  form.platformName , form.targetAmount, form.duration, 0]
 );
+
+  } catch (error) {
+    
+    return true;
+  }
+
+
 }
 
 export const insertInvestment=async (form) => {
@@ -66,12 +77,12 @@ export const insertInvestment=async (form) => {
     
     await db.runAsync(
       `INSERT INTO investment (amount, date, platformId) VALUES (?, ?, (SELECT id FROM platforms WHERE name = ? ))`,
-      [form.Amount, form.date, form.Where]
+      [form.amount, form.date, form.platformName]
     )
 
     await db.runAsync(
       `UPDATE platforms SET balance = balance + ? WHERE name = ?`,
-      [form.Amount, form.Where]
+      [form.amount, form.platformName]
     )
 
 }
@@ -96,5 +107,10 @@ export const getAllInvestments = async () => {
 }
 
 
- 
+ /*const dropTables=async()=>{
+  const db = getDBConnection();
+    (await db).runSync('DROP TABLE IF EXISTS platforms');
 
+}
+dropTables()
+*/

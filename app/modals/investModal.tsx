@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   TextInput,
+  
 } from 'react-native';
 
 interface InvestModalProps {
@@ -27,12 +28,17 @@ const [form, setForm] = React.useState({
     duration: '',
 });
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
+
     if(!form.platformName || !form.targetAmount || !form.duration) {
         alert('Please fill in all fields');
         return;
     }
-    insertPlatform(form);
+    const res = await insertPlatform(form);
+    if (res) {
+        alert('Platform with that name already exists');
+        return;
+    }
     
     setModalVisible(false);
     setForm({
@@ -40,7 +46,7 @@ const handleSubmit = () => {
         targetAmount: '',
         duration: '',
     });
-}
+  }
 
   return (
     <View>
