@@ -1,6 +1,7 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { navigate } from 'expo-router/build/global-state/routing'
 
 const Settings = () => {
   const[mode,setMode]=useState(false)
@@ -18,7 +19,7 @@ const Settings = () => {
       </View>
       <Text style={styles.line}></Text>
     <View style={styles.security}>
-      <TouchableOpacity style={styles.third_ban}>
+      <TouchableOpacity style={styles.third_ban} onPress={()=>navigate('/screens/settings/account')}>
         <MaterialCommunityIcons name='account' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Account</Text>
@@ -26,7 +27,7 @@ const Settings = () => {
         </View>
       </TouchableOpacity>
       <Text style={styles.line}></Text>
-      <TouchableOpacity style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>navigate('/screens/settings/privacy')} style={styles.third_ban}>
         <MaterialCommunityIcons name='security' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Privacy</Text>
@@ -39,7 +40,7 @@ const Settings = () => {
       <Text style={styles.line}></Text>
 
       <View style={styles.security}>
-      <TouchableOpacity style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>navigate('/screens/settings/diary')} style={styles.third_ban}>
         <MaterialCommunityIcons name='book' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Diary</Text>
@@ -50,7 +51,7 @@ const Settings = () => {
      
 
       <Text style={styles.line}></Text>
-      <TouchableOpacity style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>navigate('/screens/settings/jounal')} style={styles.third_ban}>
         <MaterialCommunityIcons name='notebook' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Personal journal</Text>
@@ -62,7 +63,7 @@ const Settings = () => {
       
       <Text style={styles.line}></Text>
       <View style={styles.security}>
-         <TouchableOpacity style={styles.third_ban}>
+         <TouchableOpacity onPress={()=>navigate('/screens/settings/ppersonality')} style={styles.third_ban}>
         <MaterialCommunityIcons name='key' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Personality</Text>
@@ -70,7 +71,7 @@ const Settings = () => {
         </View>
       </TouchableOpacity>
       <Text style={styles.line}></Text>
-      <TouchableOpacity style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>navigate('/screens/settings/secret')} style={styles.third_ban}>
         <MaterialCommunityIcons name='lock' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Secret box</Text>
@@ -83,7 +84,7 @@ const Settings = () => {
       <View style={styles.security}>
 
 
-       <TouchableOpacity style={styles.third_ban}>
+       <TouchableOpacity onPress={()=>navigate('/screens/settings/email')} style={styles.third_ban}>
         <MaterialCommunityIcons name='email' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Email notfications</Text>
@@ -95,7 +96,7 @@ const Settings = () => {
 
       <Text style={styles.line}></Text>
 
-    <TouchableOpacity style={styles.third_ban}>
+    <TouchableOpacity onPress={()=>navigate('/screens/settings/notification')} style={styles.third_ban}>
         <MaterialCommunityIcons name='message' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Notifications</Text>
@@ -104,7 +105,7 @@ const Settings = () => {
       </TouchableOpacity>
       
       <Text style={styles.line}></Text>
-      <TouchableOpacity style={styles.third_ban}>
+      <TouchableOpacity  style={styles.third_ban}>
         <MaterialCommunityIcons name='switch' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Dark mode</Text>
@@ -124,7 +125,7 @@ const Settings = () => {
     </View>
       <Text style={styles.line}></Text>
     <View style={styles.security}>
-       <TouchableOpacity style={styles.third_ban}>
+       <TouchableOpacity onPress={()=>navigate('/screens/settings/shopppinglist')} style={styles.third_ban}>
         <MaterialCommunityIcons name='shopping' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Shopping list</Text>
@@ -132,7 +133,7 @@ const Settings = () => {
         </View>
       </TouchableOpacity>
       <Text style={styles.line}></Text>
-      <TouchableOpacity style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>navigate('/screens/settings/packinglist')} style={styles.third_ban}>
         <MaterialCommunityIcons name='briefcase' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Packing list</Text>
