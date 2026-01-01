@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal, Alert, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal, Alert, TextInput, Button, ImageBackground } from 'react-native';
 import React, {   use, useEffect, useMemo, useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -54,11 +54,13 @@ useEffect(()=>{
   fetchEvents();
 },[eventD])
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: 'white' }}>
-     
+    <View style={{ flex: 1,   }}>
+     <ImageBackground source={require('@/assets/images/nature.jpg')} style={{flex:1}}>
+
 
       {/* Calendar */}
      <Calendar
+            style={{backgroundColor:'#9e0c0c88',marginTop:40}}
             onDayPress={(day) => {
               setSelectedDate(day.dateString);
               setModal(true);
@@ -86,6 +88,7 @@ useEffect(()=>{
               textDayFontSize: 16,
               textMonthFontSize: 16,
               textDayHeaderFontSize: 14,
+            
             }}
             //minDate={new Date().toISOString().split('T')[0]} // Prevent past dates
           />
@@ -228,7 +231,8 @@ useEffect(()=>{
           </View>
         </View>
       </View> 
-    </SafeAreaView>
+      </ImageBackground>
+    </View>
   );
 };
 

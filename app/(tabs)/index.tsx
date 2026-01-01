@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ImageBackground,
 } from 'react-native';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -210,7 +211,8 @@ const submitEditDay=(form:any)=>{
 
   return (
     <ScrollView>
-      
+      <ImageBackground source={require('@/assets/images/general.jpg')} style={{flex:1}}>
+
       <View style={styles.top_banner}>
         <View style={[styles.top_banner_box, { backgroundColor: bg }]}>
           <Image source={image} style={styles.image} />
@@ -464,6 +466,7 @@ const submitEditDay=(form:any)=>{
           
         </View>
        </View>
+       </ImageBackground>
     </ScrollView>
   );
 };
@@ -474,7 +477,7 @@ const styles = StyleSheet.create({
   top_banner: {
     height: 180,
     width: '100%',
-    backgroundColor: 'orange',
+    backgroundColor: '#cdbf263d',
   },
   top_banner_box: {
     marginTop: 50,
@@ -498,7 +501,7 @@ const styles = StyleSheet.create({
   todays_tasks: {
     marginTop: 20,
     marginHorizontal: 10,
-    backgroundColor: 'tomato',
+    backgroundColor: '#d9252543',
     borderRadius: 10,
     padding: 10,
     position:'relative'
@@ -509,7 +512,7 @@ const styles = StyleSheet.create({
   task_item: {
     marginBottom: 10,
     padding: 10,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#f0f0f05f',
     borderRadius: 5,
   },
   task_title: {
@@ -518,11 +521,11 @@ const styles = StyleSheet.create({
   },
   task_description: {
     fontSize: 14,
-    color: '#555',
+    color: '#182fdcff',
   },
   task_time: {
     fontSize: 12,
-    color: '#999',
+    color: '#0c0d0cff',
   },
   action_buttons: {
     flexDirection: 'row',

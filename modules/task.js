@@ -57,20 +57,19 @@ function getDate(day){
           }
       }else{
           rem = actual_day - days[String(day)];
+          
           thisDate = date - rem;
-          if (rem < 1){ 
+          
           if (month === 0 || month === 7 || month === 3){ //check if month is january august or february since their previos months is 31 days
-            thisDate = 31 + rem;
+            thisDate = 31 + thisDate;
             return thisDate;
           }else if(month === 2){ // check if month is march since prev month is 28 days
             thisDate = 28+rem;
             return thisDate;
           }else{
-            thisDate = 30 +rem
+            thisDate = 3 +rem
           }
-        }else{
-          return thisDate;
-        }
+     
       }
   }
 }
@@ -78,7 +77,23 @@ function getDate(day){
 export const week ={'Monday':getDate('Monday'),'Tuesday':getDate('Tuesday'),'Wednesday':getDate('Wednesday'),'Thursday':getDate('Thursday'),'Friday':getDate('Friday'),'Saturday':getDate('Saturday'),'Sunday':getDate('Sunday')}
 
 
- 
 
-  
+
+export const formatDate = (date) => {
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  const ordinal = (n) => {
+    if (n > 3 && n < 21) return 'th';
+    switch (n % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  };
+
+  return `${days[date.getDay()]} ${date.getDate()}${ordinal(date.getDate())} ${months[date.getMonth()]} ${date.getFullYear()}`;
+};
+
   

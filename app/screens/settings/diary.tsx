@@ -1,30 +1,50 @@
 import {
   FlatList,
   ImageBackground,
+  Modal,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View
 } from 'react-native'
+import  DateTimePicker from '@react-native-community/datetimepicker'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { getDiary } from '@/database/personal'
+import { getDiary, insertDiary } from '@/database/personal'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { formatDate } from '@/modules/task'
 
 const ITEM_HEIGHT = 260;
 
 const Diary = () => {
   const [diary, setDiary] = useState([])
   const [expanded, setExpanded] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [showDate, setShowDate] = useState(false)
   const [selectedId, setselectedId] = useState(null)
   const listRef = useRef(null)
+  const [form, setForm] = useState({
+  date: new Date(),                 // raw
+  displayDate: formatDate(new Date()),
+  text: ''
+});
+    const handleSubmit = ()=>{
+      insertDiary(form);
+      setForm(
+        {
+           date: new Date(),                 // raw
+      displayDate: formatDate(new Date()),
+      text: ''
+        }
+      )
+    }
 
   useEffect(() => {
     (async () => {
       const res = await getDiary()
       setDiary(res)
     })()
-  }, [])
+  }, [form])
 
   const scrollToIndex = (index) => {
     listRef.current?.scrollToIndex({ index, animated: true })
@@ -72,11 +92,58 @@ const Diary = () => {
             style={styles.input}
             placeholder="Are you looking for sth? Search it here"
           />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={()=>setOpen(true)}>
             <Text>Have sth in mind?</Text>
           </TouchableOpacity>
         </View>
+          <Modal
+            onRequestClose={()=>setOpen(false)}
+            visible={open}
+            animationType='fade'
+          >
+            <ImageBackground source={require('@/assets/images/car.jpg')} style={{flex:1}}>
+           <View style={{marginTop:10,marginHorizontal:3}} >
+         <View style={styles.dia_date}>
+  <TouchableOpacity onPress={() => setShowDate(true)}>
+    <TextInput
+      value={form.displayDate}
+      editable={false}
+      pointerEvents="none"
+    />
+  </TouchableOpacity>
 
+  {showDate && (
+    <DateTimePicker
+      mode="date"
+      display="default"
+      value={form.date}
+      onChange={(event, selectedDate) => {
+        setShowDate(false);
+        if (selectedDate) {
+          setForm(prev => ({
+            ...prev,
+            displayDate: formatDate(selectedDate),
+          }));
+        }
+      }}
+    />
+  )}
+</View>
+
+           
+             <TextInput
+              style={styles.dia_ent}
+              multiline={true}
+              value={form.text}
+              onChangeText={(txt)=>setForm({...form,text:txt})}
+              placeholder='Hello there?'
+            />
+           </View>
+           <TouchableOpacity style={{backgroundColor:'#0d28f17b',height:40,marginHorizontal:20,marginTop:20,borderRadius:40,alignItems:'center',justifyContent:"center"}} onPress={()=>handleSubmit ()}>
+            <Text style={{color:'red',fontSize:20}}>SAVE</Text>
+           </TouchableOpacity>
+            </ImageBackground>
+          </Modal>
         <FlatList
           ref={listRef}
           data={diary}
@@ -147,6 +214,15 @@ diadate:{
 para:{
     marginTop:10,
     fontSize:18,
+},
+dia_ent:{
+  backgroundColor:'#c5baba87',
+  fontSize:18
+
+},
+dia_date:{
+  backgroundColor:'#ca33ca4f',
+
 }
 
 })
