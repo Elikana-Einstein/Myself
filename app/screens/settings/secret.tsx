@@ -1,14 +1,13 @@
-import { Button, FlatList, ImageBackground, Modal, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {  FlatList, ImageBackground, Modal, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getGoals, insertGoal, updateGoal } from '@/database/personal';
-
 const Secret = () => {
+
 
 const [modalVisible, setModalVisible] = useState(false);
 const [editingGoal, setEditingGoal] = useState(false)
-
 const [form,setForm]=useState({
   id:'',
   goal:'',
@@ -54,6 +53,7 @@ const [form,setForm]=useState({
   const render=({item})=>{
     return(
       <View style={styles.item}>
+        
         <View style={{flexDirection:'row',gap:4}}>
           {
             item.achieved ?
@@ -76,6 +76,7 @@ const [form,setForm]=useState({
   return (
     <ImageBackground source={require('@/assets/images/robot.jpg')} style={styles.background}>
       <SafeAreaView style={{ flex: 1 }}>
+       
         <View style={styles.buttonss}>
            
          <View  style={styles.buttons}>

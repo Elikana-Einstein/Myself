@@ -1,10 +1,49 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { navigate } from 'expo-router/build/global-state/routing'
+import {authenticate, checkBiometrics } from '../biometrics/authenticate'
 
 const Settings = () => {
   const[mode,setMode]=useState(false)
+  const[auth,setAuth]=useState('')
+   
+      const unlockApp = async (item) => {
+    
+    
+        const canUseBiometrics = await checkBiometrics();
+        if (!canUseBiometrics) return;
+    
+        const success =  await authenticate();
+        if (success){
+          switch (item) {
+            case 'diary':
+               navigate('/screens/settings/diary')
+              break;
+            case 'secret':
+               navigate('/screens/settings/secret')
+              break;
+            case 'journal':
+               navigate('/screens/settings/jounal')
+              break;
+            case 'shopping':
+              navigate('/screens/settings/shopppinglist')
+              break;
+            case 'packing':
+               navigate('/screens/settings/packinglist')
+              break;
+            case 'personality':
+              navigate('/screens/settings/ppersonality')
+              break;
+            default:
+              break;
+          }
+           
+        }
+      
+      };
+    
+   
   return (
     <ScrollView style={{backgroundColor:'#a94646ca',flex:1}} >
       <View style={{flex:1,paddingBottom:50}}> 
@@ -40,7 +79,7 @@ const Settings = () => {
       <Text style={styles.line}></Text>
 
       <View style={styles.security}>
-      <TouchableOpacity onPress={()=>navigate('/screens/settings/diary')} style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>unlockApp('diary')} style={styles.third_ban}>
         <MaterialCommunityIcons name='book' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Diary</Text>
@@ -51,7 +90,7 @@ const Settings = () => {
      
 
       <Text style={styles.line}></Text>
-      <TouchableOpacity onPress={()=>navigate('/screens/settings/jounal')} style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>unlockApp('journal')} style={styles.third_ban}>
         <MaterialCommunityIcons name='notebook' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Personal journal</Text>
@@ -63,7 +102,7 @@ const Settings = () => {
       
       <Text style={styles.line}></Text>
       <View style={styles.security}>
-         <TouchableOpacity onPress={()=>navigate('/screens/settings/ppersonality')} style={styles.third_ban}>
+         <TouchableOpacity onPress={()=>unlockApp('personality')} style={styles.third_ban}>
         <MaterialCommunityIcons name='key' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Personality</Text>
@@ -71,7 +110,7 @@ const Settings = () => {
         </View>
       </TouchableOpacity>
       <Text style={styles.line}></Text>
-      <TouchableOpacity onPress={()=>navigate('/screens/settings/secret')} style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>unlockApp('secret')} style={styles.third_ban}>
         <MaterialCommunityIcons name='lock' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Secret box</Text>
@@ -125,7 +164,7 @@ const Settings = () => {
     </View>
       <Text style={styles.line}></Text>
     <View style={styles.security}>
-       <TouchableOpacity onPress={()=>navigate('/screens/settings/shopppinglist')} style={styles.third_ban}>
+       <TouchableOpacity onPress={()=>unlockApp('shopping')} style={styles.third_ban}>
         <MaterialCommunityIcons name='shopping' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Shopping list</Text>
@@ -133,7 +172,7 @@ const Settings = () => {
         </View>
       </TouchableOpacity>
       <Text style={styles.line}></Text>
-      <TouchableOpacity onPress={()=>navigate('/screens/settings/packinglist')} style={styles.third_ban}>
+      <TouchableOpacity onPress={()=>unlockApp('packing')} style={styles.third_ban}>
         <MaterialCommunityIcons name='briefcase' color={'white'} size={18}/>
         <View>
           <Text style={{color:'white',fontSize:17}}>Packing list</Text>

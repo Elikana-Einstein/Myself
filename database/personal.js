@@ -9,7 +9,7 @@ export const createTables=async () => {
         )`
     )
     db.execAsync(
-        `CREATE TABLE IF NOT EXISTS Journal(
+        `CREATE TABLE IF NOT EXISTS journal(
             id  INTEGER PRIMARY KEY AUTOINCREMENT,
             journalEntry  TEXT,
             date  TEXT
@@ -27,6 +27,27 @@ export const createTables=async () => {
         )`
     )
 
+    db.execAsync(
+    `CREATE TABLE IF NOT EXISTS shopping (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    item TEXT,
+    quantity INTEGER,
+    price INTEGER,
+    itemId INTEGER,
+    FOREIGN KEY (itemId) REFERENCES shoppingDate(id)
+        )`
+    )
+    
+    db.execAsync(
+    `CREATE TABLE IF NOT EXISTS shoppingDate (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    totalPrice INTEGER DEFAULT 0,
+    date  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`
+    )
+
+    
 }
 
 
@@ -62,17 +83,7 @@ export const getJournal = async () => {
 }
 
 
-// CREATE
-export const insertGoal = async (form) => {
-    const {goal,duration,achieved} = form
-    console.log(goal,duration);
-    
-  const db = await getDBConnection();
-  await db.execAsync(`
-    INSERT INTO goals (goal, duration, achieved)
-    VALUES ('${goal}', '${duration}', ${achieved ? 1 : 0})
-  `);
-};
+
 
 // READ (all goals)
 export const getGoals = async () => {
@@ -85,18 +96,20 @@ export const getGoals = async () => {
 };
 
 
-
-// UPDATE
-export const updateGoal = async (form) => {
-const {id,goal,duration,achieved}=form
-console.log(id,goal,duration,achieved);
-
+export const insertGoal = async ({ goal, duration, achieved }) => {
   const db = await getDBConnection();
-  await db.runAsync(`
-    UPDATE goals
-    SET goal='${goal}', duration='${duration}', achieved=${achieved ? 1 : 0}
-    WHERE id=${id}
-  `);
+  await db.runAsync(
+    `INSERT INTO goals (goal, duration, achieved) VALUES (?, ?, ?)`,
+    [goal, duration, achieved ? 1 : 0]
+  );
+};
+
+export const updateGoal = async ({ id, goal, duration, achieved }) => {
+  const db = await getDBConnection();
+  await db.runAsync(
+    `UPDATE goals SET goal=?, duration=?, achieved=? WHERE id=?`,
+    [goal, duration, achieved ? 1 : 0, id]
+  );
 };
 
 // DELETE
@@ -104,4 +117,58 @@ export const deleteGoal = async (id) => {
   const db = await getDBConnection();
   await db.runAsync(`DELETE FROM goals WHERE id=${id}`);
 };
-getGoals()
+
+// CREATE
+
+
+export const insertShoppingList = async (form) => {
+  
+ const db = await getDBConnection()
+  await db.execAsync(`
+    INSERT INTO shoppingDate (totalPrice) VALUES (?)
+    `,[form.price*form.quantity])
+  
+    const id = await db.getAllAsync(`SELECT id FROM shoppingDate`)
+    console.log(id,'l');
+    
+    
+ await db.runAsync(`INSERT INTO shopping(item,quantity,price,itemId) VALUES (?,?,?,?)`,[form.name,form.quantity,form.price,id.at(-1).id])
+
+};
+
+export const getShopping = async(date)=>{
+  const db = await getDBConnection();
+  const res = await db.getAllAsync(
+    `SELECT * FROM shopping`
+  )
+  
+  return res
+}
+
+export const getShoppingDates = async(date)=>{
+  const db = await getDBConnection();
+  const res = await db.getAllAsync(
+    `SELECT * FROM shoppingDate  `,
+  )
+  
+return res  
+}
+export const addShopping =async (form) => {
+  const db = await getDBConnection()
+  const id = await db.getAllAsync(`SELECT id FROM shoppingDate WHERE date = ?`,[form.date])
+  
+ db.runAsync(`INSERT INTO shopping (item,quantity,price,itemId) VALUES(?,?,?,?)`,[form.name,form.quantity,form.price,id[0].id])
+  
+}
+
+export const updateShopping =async (form) => {
+  const db = await getDBConnection();
+  
+ db.runAsync(`UPDATE shopping SET  item=? ,quantity=? ,price=? WHERE id=?`,[form.name,form.quantity,form.price,form.id])
+}
+const dropTables=async()=>{
+  const db = getDBConnection();
+    await db.runSync('DROP TABLE IF EXISTS shoppingDate')
+}
+//createTables()
+//dropTables()
