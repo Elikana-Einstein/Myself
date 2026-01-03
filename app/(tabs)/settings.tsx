@@ -24,10 +24,10 @@ const Settings = () => {
                navigate('/screens/settings/secret')
               break;
             case 'journal':
-               navigate('/screens/settings/jounal')
+               navigate('/screens/settings/journal')
               break;
             case 'shopping':
-              navigate('/screens/settings/shopppinglist')
+              navigate('/screens/settings/shoppinglist')
               break;
             case 'packing':
                navigate('/screens/settings/packinglist')

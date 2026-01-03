@@ -19,7 +19,7 @@ export const initDB = async () => {
   `);
 
 };
-///initDB();
+initDB();
 export const insertTodo = async (form) => {
   const db = await getDBConnection();
   

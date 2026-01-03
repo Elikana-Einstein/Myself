@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View ,ScrollView} from 'react-native'
 import React, {  use, useEffect, useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import {expenses} from '../../modules/expense'
 import { navigate } from 'expo-router/build/global-state/routing'
 import TransactionModal from '../modals/transactionModal'
 import { getAllTransactions } from '@/database/transactions'
@@ -21,7 +20,7 @@ const Expense = () => {
    setTransactions(result)
   }
   fecthTransactions();
- },[])
+ },[modal])
    
 
   return (
@@ -123,7 +122,8 @@ const styles = StyleSheet.create({
     padding:5,
     flexDirection:'row',
     justifyContent:'space-between',
-    alignItems:'center'
+    alignItems:'center',
+    marginBottom:23
   },
   transaction:{
     fontSize:18

@@ -103,7 +103,7 @@ const Diary = () => {
           >
             <ImageBackground source={require('@/assets/images/car.jpg')} style={{flex:1}}>
            <View style={{marginTop:10,marginHorizontal:3}} >
-         <View style={styles.dia_date}>
+         <SafeAreaView style={styles.dia_date}>
   <TouchableOpacity onPress={() => setShowDate(true)}>
     <TextInput
       value={form.displayDate}
@@ -128,7 +128,7 @@ const Diary = () => {
       }}
     />
   )}
-</View>
+</SafeAreaView>
 
            
              <TextInput

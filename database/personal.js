@@ -52,6 +52,7 @@ export const createTables=async () => {
 
 
 export const insertDiary=async(form)=>{
+    createTables()
         
         const db = await getDBConnection();
         db.runAsync(
@@ -62,6 +63,7 @@ export const insertDiary=async(form)=>{
 
 
 export const insertJournal=async(form)=>{
+  createTables()
         const db = await getDBConnection();
         db.runAsync(
             `INSERT INTO journal (journalEntry,date) VALUES (?,?)`,
@@ -97,6 +99,7 @@ export const getGoals = async () => {
 
 
 export const insertGoal = async ({ goal, duration, achieved }) => {
+  createTables()
   const db = await getDBConnection();
   await db.runAsync(
     `INSERT INTO goals (goal, duration, achieved) VALUES (?, ?, ?)`,
@@ -122,7 +125,7 @@ export const deleteGoal = async (id) => {
 
 
 export const insertShoppingList = async (form) => {
-  
+  createTables()
  const db = await getDBConnection()
   await db.execAsync(`
     INSERT INTO shoppingDate (totalPrice) VALUES (?)
@@ -170,5 +173,4 @@ const dropTables=async()=>{
   const db = getDBConnection();
     await db.runSync('DROP TABLE IF EXISTS shoppingDate')
 }
-//createTables()
 //dropTables()

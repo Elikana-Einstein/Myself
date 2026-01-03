@@ -10,14 +10,16 @@ export const createTransactionDb = async () => {
     date TEXT NOT NULL
   );`);
 }
+createTransactionDb()
 
 export const insertTransaction = async (transaction) => {
+    console.log(transaction);
     
   const db = await getDBConnection();
-  const { TransactionType, amount, from, date } = transaction;
+  const { type, amount, description, date } = transaction;
   await db.runAsync (
     `INSERT INTO transactions (TransactionType, amount, description, date) VALUES (?, ?, ?, ?)`,
-    [TransactionType, amount, from, date]
+    [type, amount, description, date]
   );
 }
 
@@ -53,28 +55,21 @@ export const createIvestmentPlatformsTable = async (form) => {
     )`
   )
 }
-
+createIvestmentPlatformsTable()
 export const insertPlatform = async (form) => {
   const db = await getDBConnection();
+  createIvestmentPlatformsTable()
 
-
-  try {
     await db.runAsync(
     `INSERT INTO platforms (name, target_amount, duration, balance) VALUES (?, ?, ?, ?)`,
    [  form.platformName , form.targetAmount, form.duration, 0]
 );
 
-  } catch (error) {
-    
-    return true;
-  }
-
-
 }
 
 export const insertInvestment=async (form) => {
     const db = await getDBConnection();
-    
+    createIvestmentPlatformsTable()
     await db.runAsync(
       `INSERT INTO investment (amount, date, platformId) VALUES (?, ?, (SELECT id FROM platforms WHERE name = ? ))`,
       [form.amount, form.date, form.platformName]
@@ -107,10 +102,4 @@ export const getAllInvestments = async () => {
 }
 
 
- /*const dropTables=async()=>{
-  const db = getDBConnection();
-    (await db).runSync('DROP TABLE IF EXISTS platforms');
 
-}
-dropTables()
-*/

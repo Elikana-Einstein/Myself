@@ -12,15 +12,19 @@ import {
 } from 'react-native';
 
 import React, { useEffect, useRef, useState } from 'react';
-import {  week } from '../../modules/task';
+import {  getDayOfWeekSwitch2, week } from '../../modules/task';
 import { MaterialIcons } from '@expo/vector-icons';
 import { deleteTodos, editTodos, getDays, getTodos, insertDay, updateDay } from '@/database/db';
 import Modalform from '../modal';
 const Index = () => {
+
+  const d = getDayOfWeekSwitch2()
+
  const [edit, setEdit] = useState(false);
  const [editDay, setEditDay] = useState(false);
  const [add, setAdd] = useState(false);
-const [day, setDay] = useState('Monday');
+const [day, setDay] = useState(d);
+
 const [data, setData] = useState([]);
 const [timtable, setTimetable] = useState([]);
 const [dayModal,setDayModal] = useState(false);
@@ -356,7 +360,7 @@ const submitEditDay=(form:any)=>{
 
         {
           Object.keys(week).map((key,idx)=>(
-               <TouchableOpacity key={idx} style={[styles.day,day === key?{backgroundColor:'violet'}:{} ]} onPress={()=>setDay(key)}>
+               <TouchableOpacity key={idx} style={[styles.day,day === key?{backgroundColor:'violet'}:{} ]} onPress={()=>{setDay(key);fetchDay()}}>
                  <Text>{key.slice(0,3)}</Text>
                   <Text>{week[key]}  {new Date().toLocaleString('default',{month:'short'})}</Text>
                 </TouchableOpacity>

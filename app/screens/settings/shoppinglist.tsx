@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { addShopping, getShopping, getShoppingDates, insertShoppingList, updateShopping } from '../../../database/personal.js'
 
-const PackingList = () => {
+const shoppinglist = () => {
  const[dates,setDates]=useState([])
  const[items,setitems]=useState([])
 
@@ -206,7 +206,7 @@ const handleEdit =(item)=>{
   )
 }
 
-export default PackingList
+export default shoppinglist
 
 const styles = StyleSheet.create({
   container: {

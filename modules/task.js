@@ -96,4 +96,16 @@ export const formatDate = (date) => {
   return `${days[date.getDay()]} ${date.getDate()}${ordinal(date.getDate())} ${months[date.getMonth()]} ${date.getFullYear()}`;
 };
 
+export function getDayOfWeekSwitch2() {
+  const dayNumber = new Date().getDay();
+  
+  switch (dayNumber) {
+    case 1: return 'Monday';
+    case 2: return 'Tuesday';
+    case 3: return 'Wednesday';
+    case 4: return 'Thursday';
+    case 5: return 'Friday';
+    default: return 'Monday';
+  }
+}
   
