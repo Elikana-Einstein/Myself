@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   ImageBackground,
   Modal,
@@ -10,7 +11,7 @@ import {
 } from 'react-native'
 import  DateTimePicker from '@react-native-community/datetimepicker'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { getDiary, insertDiary } from '@/database/personal'
+import { deleteDiary, getDiary, insertDiary } from '@/database/personal'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { formatDate } from '@/modules/task'
 
@@ -23,11 +24,17 @@ const Diary = () => {
   const [showDate, setShowDate] = useState(false)
   const [selectedId, setselectedId] = useState(null)
   const listRef = useRef(null)
+  const [reload, setReload] = useState(false);
+
   const [form, setForm] = useState({
   date: new Date(),                 // raw
   displayDate: formatDate(new Date()),
   text: ''
 });
+const triggerReload = () => {
+  setReload(prev => !prev);
+};
+
     const handleSubmit = ()=>{
       insertDiary(form);
       setForm(
@@ -44,7 +51,7 @@ const Diary = () => {
       const res = await getDiary()
       setDiary(res)
     })()
-  }, [form])
+  }, [form,reload])
 
   const scrollToIndex = (index) => {
     listRef.current?.scrollToIndex({ index, animated: true })
@@ -60,6 +67,7 @@ const Diary = () => {
             setTimeout(() => scrollToIndex(index), 0)
             setselectedId(item.id)
           }}
+          onLongPress={()=>handleDelete(item)}
         >
           <Text style={styles.date}>{item.date}</Text>
           <Text>{item.diaryEntry.split('.')[0]}...</Text>
@@ -76,7 +84,30 @@ const Diary = () => {
         <Text style={styles.para}>{item.diaryEntry}</Text>
       </TouchableOpacity>
     )
-  }, [expanded])
+  },[expanded,selectedId])
+const handleDelete = (item) => {
+  Alert.alert(
+    'Confirm delete',
+    'Are you sure you want to delete?',
+    [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => {
+          deleteDiary(item.id);
+            triggerReload()
+          // call your delete function here
+          // deleteTodo(item.id)
+        },
+      },
+    ],
+    { cancelable: true }
+  );
+};
 
   return (
     <ImageBackground
@@ -103,7 +134,7 @@ const Diary = () => {
           >
             <ImageBackground source={require('@/assets/images/car.jpg')} style={{flex:1}}>
            <View style={{marginTop:10,marginHorizontal:3}} >
-         <SafeAreaView style={styles.dia_date}>
+    <SafeAreaView style={styles.dia_date}>
   <TouchableOpacity onPress={() => setShowDate(true)}>
     <TextInput
       value={form.displayDate}
@@ -222,7 +253,7 @@ dia_ent:{
 },
 dia_date:{
   backgroundColor:'#ca33ca4f',
-
+  marginTop:20
 }
 
 })

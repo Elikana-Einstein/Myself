@@ -11,6 +11,7 @@ import {
   ImageBackground,
 } from 'react-native';
 
+import { color } from '@/constants/theme';
 import React, { useEffect, useRef, useState } from 'react';
 import {  getDayOfWeekSwitch2, week } from '../../modules/task';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -87,8 +88,8 @@ const [dayForm,setDayForm] = useState({
     id:'',
     title: '',
     description: '',
-    priority: '',
-    status: '',
+    priority: 'low',
+    status: 'pending',
     time: '',
   });
   const [dayEditForm,setDayEditForm]=useState({
@@ -214,9 +215,9 @@ const submitEditDay=(form:any)=>{
 }
 
   return (
-    <ScrollView>
+   
       <ImageBackground source={require('@/assets/images/general.jpg')} style={{flex:1}}>
-
+ <ScrollView> 
       <View style={styles.top_banner}>
         <View style={[styles.top_banner_box, { backgroundColor: bg }]}>
           <Image source={image} style={styles.image} />
@@ -360,7 +361,7 @@ const submitEditDay=(form:any)=>{
 
         {
           Object.keys(week).map((key,idx)=>(
-               <TouchableOpacity key={idx} style={[styles.day,day === key?{backgroundColor:'violet'}:{} ]} onPress={()=>{setDay(key);fetchDay()}}>
+               <TouchableOpacity key={idx} style={[styles.day,day === key?{backgroundColor:'violet'}:{} ]} onPress={()=>setDay(key)}>
                  <Text>{key.slice(0,3)}</Text>
                   <Text>{week[key]}  {new Date().toLocaleString('default',{month:'short'})}</Text>
                 </TouchableOpacity>
@@ -385,6 +386,7 @@ const submitEditDay=(form:any)=>{
                 <Text style = {{fontWeight:'bold'}}>Time</Text>
                 <TextInput 
                 placeholder='7 - 10' 
+                placeholderTextColor={color.placeholder}
                 style={styles.dayInput} 
                 value={dayForm.time}
                 onChangeText={(text)=>setDayForm({...dayForm,time:text})}
@@ -394,6 +396,7 @@ const submitEditDay=(form:any)=>{
                 <Text style = {{fontWeight:'bold'}}>Event</Text>
                 <TextInput 
                 placeholder='Computer programming 1' 
+                placeholderTextColor={color.placeholder}
                 style={styles.dayInput}
                 value={dayForm.event}
                 onChangeText={(text)=>setDayForm({...dayForm,event:text})}
@@ -403,6 +406,7 @@ const submitEditDay=(form:any)=>{
                 <Text style = {{fontWeight:'bold'}}>Venue</Text>
                 <TextInput 
                 placeholder='NCLB 04' 
+                placeholderTextColor={color.placeholder}
                 style={styles.dayInput} 
                 value={dayForm.venue}
                 onChangeText={(text)=>setDayForm({...dayForm,venue:text})}
@@ -423,7 +427,6 @@ const submitEditDay=(form:any)=>{
               <View style={styles.dayBlock}>
                 <Text style = {{fontWeight:'bold'}}>Time</Text>
                 <TextInput 
-                placeholder='7 - 10' 
                 style={styles.dayInput} 
                 value={dayEditForm.time}
                 onChangeText={(text)=>setDayEditForm({...dayEditForm,time:text})}
@@ -432,7 +435,6 @@ const submitEditDay=(form:any)=>{
               <View style={styles.dayBlock}>
                 <Text style = {{fontWeight:'bold'}}>Event</Text>
                 <TextInput 
-                placeholder='Computer programming 1' 
                 style={styles.dayInput}
                 value={dayEditForm.event}
                 onChangeText={(text)=>setDayEditForm({...dayEditForm,event:text})}
@@ -441,7 +443,6 @@ const submitEditDay=(form:any)=>{
               <View style={styles.dayBlock}>
                 <Text style = {{fontWeight:'bold'}}>Venue</Text>
                 <TextInput 
-                placeholder='NCLB 04' 
                 style={styles.dayInput} 
                 value={dayEditForm.venue}
                 onChangeText={(text)=>setDayEditForm({...dayEditForm,venue:text})}
@@ -470,8 +471,9 @@ const submitEditDay=(form:any)=>{
           
         </View>
        </View>
-       </ImageBackground>
     </ScrollView>
+
+       </ImageBackground>
   );
 };
 

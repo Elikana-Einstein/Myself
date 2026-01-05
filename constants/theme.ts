@@ -51,3 +51,6 @@ export const Fonts = Platform.select({
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
 });
+export const color={
+  placeholder:'#0808088a'
+}

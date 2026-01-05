@@ -9,6 +9,7 @@ import {
 import React, { useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { insertTodo } from '../database/db'
+import { color } from '@/constants/theme'
 
 const Modalform = ({ modal, setModal }) => {
 
@@ -16,7 +17,7 @@ const Modalform = ({ modal, setModal }) => {
     title: '',
     description: '',
     priority:'',
-    status:'',
+    status:'Pending',
     time: '',
   })
 
@@ -60,6 +61,7 @@ const Modalform = ({ modal, setModal }) => {
           value={form.title}
           onChangeText={text => setForm({ ...form, title: text })}
           placeholder="Task title"
+          placeholderTextColor={color.placeholder}
         />
 
         {/* Description */}
@@ -69,6 +71,7 @@ const Modalform = ({ modal, setModal }) => {
           value={form.description}
           onChangeText={text => setForm({ ...form, description: text })}
           placeholder="Task description"
+          placeholderTextColor={color.placeholder}
         />
 
         {/* priority */}
@@ -78,6 +81,7 @@ const Modalform = ({ modal, setModal }) => {
           value={form.priority}
           onChangeText={text => setForm({ ...form, priority: text })}
           placeholder="Low || High || Medium"
+          placeholderTextColor={color.placeholder}
         />
          {/* status */}
         <Text style={styles.label}>Status</Text>
@@ -86,6 +90,7 @@ const Modalform = ({ modal, setModal }) => {
           value={form.status}
           onChangeText={text => setForm({ ...form, status: text })}
           placeholder="Pending"
+          placeholderTextColor={color.placeholder}
         />
    {/* time */}
         <Text style={styles.label}>Time</Text>
@@ -94,6 +99,7 @@ const Modalform = ({ modal, setModal }) => {
           value={form.time}
           onChangeText={text => setForm({ ...form, time: text })}
           placeholder="Task time"
+          placeholderTextColor={color.placeholder}
         />
 
 

@@ -10,8 +10,9 @@ import {
 import React, { useEffect, useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { addShopping, getShopping, getShoppingDates, insertShoppingList, updateShopping } from '../../../database/personal.js'
+import { color } from '@/constants/theme'
 
-const shoppinglist = () => {
+const Shoppinglist = () => {
  const[dates,setDates]=useState([])
  const[items,setitems]=useState([])
 
@@ -170,6 +171,7 @@ const handleEdit =(item)=>{
 
             <TextInput
               placeholder="Item name"
+              placeholderTextColor={color.placeholder}
               value={form.name}
               onChangeText={(text)=>setForm({...form,name:text})}
               style={styles.input}
@@ -177,6 +179,7 @@ const handleEdit =(item)=>{
 
             <TextInput
               placeholder="Quantity"
+              placeholderTextColor={color.placeholder}
               value={form.quantity}
               onChangeText={(text)=>setForm({...form,quantity:text})}
               keyboardType="numeric"
@@ -184,6 +187,7 @@ const handleEdit =(item)=>{
             />
                  <TextInput
               placeholder="Price"
+              placeholderTextColor={color.placeholder}
               value={form.price}
               onChangeText={(text)=>setForm({...form,price:text})}
               keyboardType="numeric"
@@ -206,7 +210,7 @@ const handleEdit =(item)=>{
   )
 }
 
-export default shoppinglist
+export default Shoppinglist
 
 const styles = StyleSheet.create({
   container: {
@@ -249,6 +253,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,
+    position:'absolute',
+    bottom:20,
+    right:0
   },
   addText: {
     color: '#fff',

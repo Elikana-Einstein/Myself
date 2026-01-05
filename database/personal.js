@@ -46,6 +46,25 @@ export const createTables=async () => {
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
         )`
     )
+    db.execAsync(
+  `CREATE TABLE IF NOT EXISTS packingTrip (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`
+);
+
+db.execAsync(
+  `CREATE TABLE IF NOT EXISTS packing (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    item TEXT,
+    quantity INTEGER DEFAULT 1,
+    packed INTEGER DEFAULT 0,
+    tripId INTEGER,
+    FOREIGN KEY (tripId) REFERENCES packingTrip(id)
+  )`
+);
+
 
     
 }
@@ -173,4 +192,69 @@ const dropTables=async()=>{
   const db = getDBConnection();
     await db.runSync('DROP TABLE IF EXISTS shoppingDate')
 }
+
+export const deleteDiary =async (id) => {
+  const db = await getDBConnection()
+  db.runAsync(`
+    DELETE FROM diary WHERE id=?
+    `,[id])
+}
+export const insertPackingTrip = async (name) => {
+  createTables();
+  const db = await getDBConnection();
+
+  await db.runAsync(
+    `INSERT INTO packingTrip (name) VALUES (?)`,
+    [name]
+  );
+};
+export const getPackingTrips = async () => {
+  const db = await getDBConnection();
+  return await db.getAllAsync(`SELECT * FROM packingTrip`);
+};
+export const insertPackingItem = async (form) => {
+  createTables();
+  const db = await getDBConnection();
+
+  await db.runAsync(
+    `INSERT INTO packing (item, quantity, tripId)
+     VALUES (?, ?, ?)`,
+    [form.item, form.quantity || 1, form.tripId]
+  );
+};
+export const getPackingItems = async (tripId) => {
+  const db = await getDBConnection();
+
+  return await db.getAllAsync(
+    `SELECT * FROM packing WHERE tripId = ?`,
+    [tripId]
+  );
+};
+export const togglePackedItem = async (id, packed) => {
+  const db = await getDBConnection();
+
+  await db.runAsync(
+    `UPDATE packing SET packed=? WHERE id=?`,
+    [packed ? 1 : 0, id]
+  );
+};
+export const updatePackingItem = async (form) => {
+  const db = await getDBConnection();
+
+  await db.runAsync(
+    `UPDATE packing
+     SET item=?, quantity=?
+     WHERE id=?`,
+    [form.item, form.quantity, form.id]
+  );
+};
+export const deletePackingItem = async (id) => {
+  const db = await getDBConnection();
+
+  await db.runAsync(
+    `DELETE FROM packing WHERE id=?`,
+    [id]
+  );
+};
+
 //dropTables()

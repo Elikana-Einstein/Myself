@@ -149,7 +149,7 @@ const InvestmentModal = ({ modalVisible, setModalVisible ,platForms}: InvestModa
                     style={[styles.button, styles.investButton]} 
                     onPress={handleSubmit}
                   >
-                    <Text style={styles.investButtonText}>Add Platform</Text>
+                    <Text style={styles.investButtonText}>Invest</Text>
                   </TouchableOpacity>
                 </View>
               </View>

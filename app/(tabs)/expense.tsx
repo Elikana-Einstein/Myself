@@ -59,7 +59,7 @@ const Expense = () => {
               </View>
               <View>
 
-                { item.TransactionType === 'Expense'?
+                { item.TransactionType.toLowerCase() === 'expense'?
                   <MaterialCommunityIcons name='arrow-down' color={'red'} size={18}/>:
                   <MaterialCommunityIcons name='arrow-up' color={'green'} size={15}/>
 
